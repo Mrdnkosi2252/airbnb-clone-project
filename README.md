@@ -1,153 +1,93 @@
-
 # Airbnb Clone Project
 
 ## Overview
-The Airbnb Clone Project is a full-stack web application simulating a booking platform like Airbnb. It focuses on building a scalable backend with robust database design, secure APIs, and efficient deployment pipelines. The project aims to enhance skills in collaborative development, modern frameworks, and industry-standard practices.
+The Airbnb Clone Project is a full-stack web application simulating a booking platform like Airbnb. It aims to develop a scalable backend using Django, PostgreSQL, and GraphQL, with secure APIs and automated CI/CD pipelines. The project enhances skills in collaborative development, database design, and industry-standard practices.
 
-## Goals
-- Master backend development using Django and GraphQL.
-- Design a relational database with MySQL or PostgreSQL.
-- Implement secure APIs with authentication and authorization.
-- Set up CI/CD pipelines for automated testing and deployment.
-- Collaborate effectively using GitHub workflows.
-
-## Tech Stack
-- **Django**: Backend framework for building RESTful APIs.
-- **PostgreSQL/MySQL**: Relational database for storing user and booking data.
-- **GraphQL**: Query language for efficient API communication.
-- **Docker**: Containerization for consistent development environments.
-- **GitHub Actions**: CI/CD tool for automated testing and deployment.
-
-
-
+## Project Goals
+- Build a robust backend with Django and GraphQL for efficient API communication.
+- Design a relational PostgreSQL database for users, properties, and bookings.
+- Implement secure APIs with authentication, authorization, and rate limiting.
+- Automate testing and deployment using CI/CD pipelines with GitHub Actions.
+- Foster collaboration via GitHub workflows and team roles.
 
 ## Team Roles
+The project involves key roles to ensure successful development, aligned with industry standards:
 
-The Airbnb Clone Project involves multiple roles to ensure successful development and deployment. Below are the key roles and their responsibilities:
+- **Backend Developer**: Implements server-side logic, RESTful APIs, and GraphQL queries using Django.
+- **Database Administrator**: Designs and optimizes PostgreSQL schemas for data integrity and performance.
+- **DevOps Engineer**: Configures CI/CD pipelines with GitHub Actions and Docker for automated testing and deployment.
+- **Security Specialist**: Ensures API security through JWT authentication, role-based authorization, and rate limiting.
+- **Project Manager**: Coordinates tasks, tracks progress, and aligns deliverables with project goals.
 
-- **Backend Developer**: Designs and implements server-side logic, APIs, and database integrations using Django and GraphQL. Ensures the application is scalable and performs efficiently.
-- **Database Administrator**: Plans and manages the relational database (e.g., PostgreSQL/MySQL), defining schemas, optimizing queries, and ensuring data integrity.
-- **DevOps Engineer**: Sets up CI/CD pipelines using GitHub Actions and Docker, automates testing and deployment, and maintains infrastructure reliability.
-- **Security Specialist**: Implements API security measures like authentication, authorization, and rate limiting to protect user data and transactions.
-- **Project Manager**: Oversees project progress, coordinates team tasks, and ensures timely delivery while maintaining alignment with project goals.
+## Technology Stack
+The project leverages modern technologies to build a scalable platform:
 
+- **Django**: Python framework for developing RESTful APIs and server-side logic.
+- **PostgreSQL**: Relational database for storing users, properties, bookings, reviews, and payments.
+- **GraphQL**: Query language for efficient, flexible API data retrieval.
+- **Docker**: Containerization tool for consistent development and deployment environments.
+- **GitHub Actions**: CI/CD tool for automating testing, linting, and deployment workflows.
 
-
-
-# Technology Stack
-
-The Airbnb Clone Project leverages modern tools and frameworks to build a scalable booking platform. Below are the key technologies and their purposes:
-
-- **Django**: A Python-based web framework used to develop RESTful APIs and handle server-side logic for user management, bookings, and properties.
-- **PostgreSQL**: A relational database system for storing and managing data related to users, properties, bookings, and payments.
-- **GraphQL**: A query language for APIs, enabling efficient data retrieval and reducing over-fetching compared to REST.
-- **Docker**: A containerization platform ensuring consistent development and deployment environments across team members.
-- **GitHub Actions**: A CI/CD tool for automating testing, linting, and deployment workflows to streamline development.
-
-
-
+Each technology enhances the project’s scalability, performance, and maintainability.
 
 ## Database Design
-
-The Airbnb Clone Project uses a relational database to manage core entities. Below are the key entities, their fields, and relationships:
+The database supports core functionalities with the following entities, fields, and relationships:
 
 - **Users**:
-  - `id`: Unique identifier for each user.
-  - `email`: User’s email address for login.
-  - `password`: Hashed password for authentication.
-  - `name`: Full name.
-  - `phone`: Contact number.
-  - **Relationships**: A user can own multiple properties and bookings; a booking belongs to one user.
-
+  - `user_id`: Primary key, unique identifier.
+  - `email`: Unique email for login.
+  - `password`: Hashed password for security.
+  - `name`: Full name of the user.
+  - `phone`: Contact number for notifications.
 - **Properties**:
-  - `id`: Unique identifier for each property.
-  - `title`: Property name or description.
-  - `owner_id`: Foreign key referencing `Users`.
+  - `property_id`: Primary key, unique identifier.
+  - `title`: Property name (e.g., “Cozy Apartment”).
+  - `owner_id`: Foreign key to Users (property owner).
   - `location`: Address or coordinates.
-  - `price_per_night`: Cost per night.
-  - **Relationships**: A property belongs to one user; a property can have to multiple bookings.
-
+  - `price_per_night`: Nightly rate in ZAR.
 - **Bookings**:
-  - `booking_id`: Unique identifier.
-  - `id`: Unique ID for each booking.
-  - `property_id`: Foreign key referencing `Properties`.
-  - `user_id`: Foreign key referencing `Users`.
+  - `booking_id`: Primary key, unique identifier.
+  - `user_id`: Foreign key to Users (guest).
+  - `property_id`: Foreign key to Properties.
   - `check_in`: Check-in date.
   - `check_out`: Check-out date.
-  - **Relationships**: A booking is linked to one user and one property.
-
 - **Reviews**:
-  - `id`: `: Unique identifier.
-  - `user_id`: Foreign key referencing `Users`.
-  - `property_id`: Foreign key referencing `Properties`.
-  - `rating`: Numerical rating (1–5).
-  - `comment`: Text comment.
-  - **Relationships**: A review is linked to one user and one property.
-
+  - `review_id`: Primary key, unique identifier.
+  - `user_id`: Foreign key to Users (reviewer).
+  - `property_id`: Foreign key to Properties.
+  - `rating`: Score (1–5).
+  - `comment`: Text feedback.
 - **Payments**:
-  - `id`: `: Unique identifier.
-  - `booking_id`: Foreign key referencing `Bookings`.
-  - `amount`: Payment amount.
-  - `status`: Payment status (e.g., pending, completed).
+  - `payment_id`: Primary key, unique identifier.
+  - `booking_id`: Foreign key to Bookings.
+  - `amount`: Payment amount in ZAR.
+  - `status`: Status (e.g., pending, completed).
   - `date`: Transaction date.
-  - **Relationships**: A payment is linked to one booking.
 
-**Entity Relationships**:
-- A user can have multiple properties and bookings.
-- A property can have multiple bookings and reviews.
-- A booking belongs to one user and one property.
-- A review belongs to one user and one property.
-- A payment is associated with one booking.
+### Relationships
+- A User can own multiple Properties and make multiple Bookings.
+- A Property belongs to one User (owner) and has multiple Bookings and Reviews.
+- A Booking belongs to one User (guest) and one Property.
+- A Review belongs to one User (reviewer) and one Property.
+- A Payment is linked to one Booking.
 
-
-
-
-
-
-
+The design ensures data integrity and supports efficient queries for booking operations.
 
 ## Feature Breakdown
+The project includes core features to replicate Airbnb’s functionality:
 
-The Airbnb Clone Project includes core features to replicate a booking platform’s user experience and business logic. Below are the main features:
-
-- **User Management**: Allows users to register, log in, and update their profiles. Supports secure authentication to protect user data. Critical for personalizing user interactions with the platform.
-- **Property Management**: Enables property owners to list, edit, and manage their properties. Provides search and filter options for guests to find suitable accommodations. Drives the core listing functionality.
-- **Booking System**: Facilitates booking requests, availability checks, and cancellations for properties. Ensures seamless transactions between guests and hosts. Central to the platform’s operational flow.
-- **Review System**: Allows users to leave ratings and feedback for properties after their stay. Enhances trust and informs future bookings. Improves user decision-making.
-- **Payment System**: Processes secure payments for bookings with support for multiple payment methods. Ensures financial transactions are safe and reliable. Essential for monetization.
-
-
+- **User Management**: Enables user registration, login, and profile updates with secure authentication. Supports personalized interactions for guests and hosts.
+- **Property Management**: Allows hosts to list and manage properties; provides search filters for guests. Drives the platform’s core listing functionality.
+- **Booking System**: Facilitates booking requests, availability checks, and cancellations. Ensures seamless guest-host transactions.
+- **Review System**: Permits guests to rate and comment on properties post-stay. Enhances trust and informs booking decisions.
+- **Payment System**: Processes secure payments for bookings via multiple methods. Ensures reliable financial transactions.
 
 ## API Security
+The project prioritizes API security to protect user data and transactions:
 
-Securing the Airbnb Clone Project’s APIs is vital to protect user data and ensure trust. Below are the key security measures:
+- **Authentication**: Uses JSON Web Tokens (JWT) to verify user identity, preventing unauthorized access to endpoints like `/api/bookings`.
+- **Authorization**: Implements role-based access (e.g., guest, host, admin) to restrict actions, such as hosts editing only their properties.
+- **Rate Limiting**: Caps API requests per user to prevent abuse and ensure server stability during high traffic.
+- **Data Encryption**: Employs HTTPS and TLS to secure data in transit, safeguarding sensitive information like payment details.
 
-- **Authentication**: Uses JSON Web Tokens (JWT) to verify user identity for API requests. Prevents unauthorized access to sensitive endpoints like user profiles or payment Ensures data access only by legitimate users.
-- **Authorization**: Restricts access to resources based on user roles (e.g., guest, host, admin). Ensures users can only perform only perform authorized actions, like hosts editing their own properties. Protects against misuse of the system.
-- **Rate Limiting**: Limits the number of API requests per user to prevent abuse or denial-of-service attacks. Maintains server performance and availability. Enhances system reliability during high traffic.
-- **Data Encryption**: Employs HTTPS and TLS to encrypt data in transit, safeguarding sensitive information like payment details. Crucial for protecting user privacy and complying with regulations.
-
-These measures collectively ensure the platform’s data integrity, user privacy, and secure transactions.
-
-
-
-
-## CI/CD Pipeline
-
-Continuous Integration and Continuous Deployment (CI/CD) pipelines automate the development, testing, and deployment processes for the Airbnb Clone Project. They ensure code quality, reduce manual errors, and enable rapid delivery of features.
-
-- **Why CI/CD?**: CI/CD pipelines allow developers to test to integrate code changes frequently, running automated tests to catch bugs early. They also streamline deployment to production, ensuring consistency across environments. This improves development efficiency and reliability.
-- **Tools Used**:
-  - **GitHub Actions**: Automates workflows for linting, unit testing, and integration testing on every push or pull request.
-  - **Docker**: Packages the application and its dependencies into containers for consistent testing and deployment across environments.
-
-These tools enhance collaboration and ensure the application remains stable and scalable.
-
-
-
-
-
-
-
-
-
+These measures ensure data integrity, user privacy, and compliance with security
